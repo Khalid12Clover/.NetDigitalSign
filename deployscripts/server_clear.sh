@@ -1,1 +1,1 @@
-rm -rf /var/www/*
+
