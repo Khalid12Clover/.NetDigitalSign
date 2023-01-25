@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 cd /var/www
-sudo java -jar -Dserver.port=80 \
-    *.jar > /dev/null 2> /dev/null < /dev/null &
+dotnet publish -c Release -r linux-x64 --self-contained=true -p:PublishSingleFile=true -p:GenerateRuntimeConfigurationFiles=true -o artifacts
