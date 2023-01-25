@@ -1,2 +1,1 @@
-#!/bin/bash
-sudo systemctl start dnsserver.service
+sudo systemctl stop webapi.service
