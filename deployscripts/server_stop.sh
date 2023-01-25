@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo pkill -f 'java -jar'
+sudo systemctl start dnsserver.service
