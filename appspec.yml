@@ -1,0 +1,28 @@
+version: 0.0
+os: linux
+
+files:
+  - source: DigitalSignature
+    destination: /var/www
+  - source: deployscripts/DigitalSignature
+    destination: /etc/systemd/system
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+
+hooks:
+  BeforeInstall:
+    - location: deployscripts/server_clear.sh
+      timeout: 300
+      runas: ec2-user  
+  ApplicationStart:
+    - location: deployscripts/server_start.sh
+      timeout: 20
+      runas: ec2-user
+  ApplicationStop:
+    - location: deployscripts/server_stop.sh
+      timeout: 20
+      runas: ec2-user
