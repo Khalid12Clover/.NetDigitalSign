@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-rm -rf /var/www
+rm -rf /var/www/*
