@@ -4,7 +4,10 @@ os: linux
 files:
   - source: DigitalSignature/bin/
     destination: /var/www
- 
+    
+ - source: webapi.service
+    destination: /etc/systemd/system
+    
 permissions:
   - object: /
     pattern: "**"
