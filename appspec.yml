@@ -2,11 +2,9 @@ version: 0.0
 os: linux
 
 files:
-  - source: DigitalSignature
+  - source: DigitalSignature/bin/DigitalSignature.dll
     destination: /var/www
-  - source: deployscripts/DigitalSignature
-    destination: /etc/systemd/system
-
+ 
 permissions:
   - object: /
     pattern: "**"
