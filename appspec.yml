@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 
 files:
-  - source: DigitalSignature/bin/DigitalSignature.dll
+  - source: DigitalSignature/bin/
     destination: /var/www
  
 permissions:
