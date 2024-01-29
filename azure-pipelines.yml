@@ -8,3 +8,8 @@ variables:
   buildPlatform: 'Any CPU' 
   buildConfiguration: 'Release'
   solution: '**/DigitalSignature.sln'
+
+steps:
+- task: NuGetToolInstaller@1
+  name: 'NuGetToolInstaller'
+  displayName: 'NuGet tool installer'
