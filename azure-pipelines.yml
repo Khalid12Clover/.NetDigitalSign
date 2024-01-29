@@ -5,46 +5,41 @@ pool:
   name: Default
 
 variables:
-  buildPlatform: 'Any CPU' 
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  solution: '**/DigitalSignature.sln'
-  project: '**/DigitalSignature.csproj'
 
 steps:
-- task: NuGetToolInstaller@1
-  name: 'NuGetToolInstaller'
-  displayName: 'NuGet tool installer'
-  
-- task: NuGetCommand@2
-  name: 'NuGetRestore'
-  displayName: 'NuGet restore packages'
+- task: UseDotNet@2
+  inputs:
+    version: '2.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    restoreSolution: '$(solution)'
-    feedsToUse: 'select'
- 
+    projects: '$(solution)'
+
 - task: DotNetCoreCLI@2
-  name: 'Tests'
-  displayName: 'Run tests'
+  inputs:
+    command: 'build'
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
   inputs:
     command: 'test'
     projects: '$(solution)'
-    arguments: '--configuration $(BuildConfiguration)'
- 
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
 - task: DotNetCoreCLI@2
-  name: 'Publish'
-  displayName: 'Publish'
   inputs:
     command: 'publish'
-    publishWebProjects: false
-    projects: '$(project)'
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: false
- 
+    publishWebProjects: true
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+
 - task: PublishBuildArtifacts@1
-  name: 'PublishBuildArtifacts'
-  displayName: 'Publish build artifacts'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'AzureTestProject'
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'AzureTestProject'
     publishLocation: 'Container'
