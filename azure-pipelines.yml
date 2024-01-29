@@ -1,8 +1,8 @@
+name: Digital_$(Date:yyyyMMdd)$(Rev:.r)
 trigger:
-- none
- 
+- main
 pool:
-  vmImage: 'default'
+  vmImage: Default
  
 variables:
   buildPlatform: 'Any CPU'
