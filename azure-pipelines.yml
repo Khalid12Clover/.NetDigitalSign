@@ -5,19 +5,47 @@ pool:
   name: Default
 
 variables:
-  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  solution: '**/DigitalSignature.sln'
+  project: '**/DigitalSignature.csproj'
 
 steps:
-- task: UseDotNet@2
+- task: NuGetToolInstaller@1
+  name: 'NuGetToolInstaller'
+  displayName: 'NuGet tool installer'
+ 
+- task: NuGetCommand@2
+  name: 'NuGetRestore'
+  displayName: 'NuGet restore packages'
   inputs:
-    version: '4.x'
-    installationPath: $(Agent.ToolsDirectory)/dotnet
-
+    command: 'restore'
+    restoreSolution: '$(solution)'
+    feedsToUse: 'select'
+ 
 - task: DotNetCoreCLI@2
+  name: 'Tests'
+  displayName: 'Run tests'
   inputs:
-    command: 'build'
+    command: 'test'
     projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration)'
+    arguments: '--configuration $(BuildConfiguration)'
+ 
+- task: DotNetCoreCLI@2
+  name: 'Publish'
+  displayName: 'Publish'
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '$(project)'
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: false
+ 
+- task: PublishBuildArtifacts@1
+  name: 'PublishBuildArtifacts'
+  displayName: 'Publish build artifacts'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'AzureTestProject'
+    publishLocation: 'Container'
 
