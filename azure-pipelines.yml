@@ -10,6 +10,7 @@ variables:
   solution: '**/*.sln'
   project: '**/DigitalSignature.csproj'
 
+    
 steps:
 - task: NuGetToolInstaller@1
 
@@ -51,4 +52,5 @@ steps:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)'
     artifactName: 'azuredrop'
     publishLocation: 'Container'
+
 
