@@ -24,6 +24,18 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: PowerShell@2
+  displayName: 'Install .NET SDK'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $dotnetVersion = "6.0.418"
+      Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile "$env:TEMP\dotnet-install.ps1"
+      . "$env:TEMP\dotnet-install.ps1" -Channel LTS -Version $dotnetVersion -InstallDir "$env:USERPROFILE\.dotnet" -NoPath
+      $env:PATH += ";${env:USERPROFILE}\.dotnet"
+      dotnet --version
+
+
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
